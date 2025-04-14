@@ -12,12 +12,10 @@ function Weather() {
   const [data, setData] = useState({})
   const [location, setLocation] = useState('')
 
-  const api_key = "79b1be762bba9e8d92f3f0c7c2ea63cb"
-
   useEffect(() => {
     const fetchDefaultWeather = async () => {
       const defaultLocation = "Nashville"
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&units=Metric&appid=${api_key}`
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&units=Metric&appid=${import.meta.env.VITE_APP_ID}`
       const res = await fetch(url)
       const defaultData = await res.json()
       setData(defaultData)
@@ -32,12 +30,18 @@ function Weather() {
 
   const search = async() => {
     if (location.trim() !== ""){
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${api_key}`
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=Metric&appid=${import.meta.env.VITE_APP_ID}`
       const res = await fetch(url)
       const searchData = await res.json()
+      if (searchData.cod !== 200){
+        setData({notFound: true})
+      }
+      else{
+        setData(searchData)
+        setLocation('')
+      }
       console.log(searchData)
-      setData(searchData)
-      setLocation('')
+      
     }
     
   }
@@ -84,7 +88,7 @@ function Weather() {
   }
 
   return(
-    <div className="container" style={{backgroundImage}}>
+    <div className="container" style={{backgroundImage: backgroundImage}}>
       <div className="weather-app">
 
         <div className="search">
@@ -97,8 +101,8 @@ function Weather() {
             <Search className='search-icon'onClick={search}/>
           </div>
         </div>
-
-        <div className="weather">
+        {data.notFound ? (<div className="not-found">Not Found</div>): (
+          <><div className="weather">
           <img src={weatherImage} alt="sunny" />
           <div className="weather-type">
             <p>{data.weather ? data.weather[0].main : null}; {data.main ? `${Math.floor(data.main.temp)}°C`:null}</p>
@@ -127,6 +131,9 @@ function Weather() {
             <div className="data">{data.wind ? data.wind.speed : null} km/hr</div>
           </div>
         </div>
+          </>
+        )}
+        
       </div>
     </div>
   )  
