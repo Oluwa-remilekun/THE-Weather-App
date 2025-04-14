@@ -5,6 +5,12 @@ import rainy from "../assets/rainy.png"
 import snowy from "../assets/snowy.png"
 import loadingGif from "../assets/loading.gif"
 import bitmoji from "../assets/bitmoji.png"
+import rainBg from "../assets/rain.jpeg"
+import cloudBg from "../assets/cloud.jpeg"
+import mistBg from "../assets/mist.jpeg"
+import hazeBg from "../assets/haze.jpeg"
+import sunBg from "../assets/sun.jpeg"
+import snowBg from "../assets/snow.jpeg"
 import { Search, Wind, MapPinIcon, Droplet} from 'lucide-react';
 import { useEffect, useState } from 'react'
 
@@ -69,6 +75,17 @@ function Weather() {
   const weatherImage = data.weather ? weatherImages[data.weather[0].main] : null;
 
   const backgroundImages = {
+    Clear: sunBg,
+    Clouds: cloudBg,
+    Rain: rainBg,
+    Snow: snowBg,
+    Haze: hazeBg,
+    Mist: mistBg
+  }
+
+  const backgroundImage = data.weather ? backgroundImages[data.weather[0].main] : sunBg
+
+  const weatherBackgrounds = {
     Clear: 'linear-gradient(to right, #f3b07c, #fcd283)',
     Clouds: 'linear-gradient(to right, #57d6d4, #71eeec)',
     Rain: 'linear-gradient(to right, #5bc8fb, #80eaff)',
@@ -77,7 +94,19 @@ function Weather() {
     Mist: 'linear-gradient(to right, #57d6d4, #71eeec)'
   }
 
-  const backgroundImage = data.weather ? backgroundImages[data.weather[0].main] : 'linear-gradient(to right, #f3b07c, #fcd283)'
+  const weatherBackground = data.weather ? weatherBackgrounds[data.weather[0].main] : 'linear-gradient(to right, #f3b07c, #fcd283)'
+
+  const weatherMessages = {
+    Clear: "Perfect day for a light outfit and sunglasses!",
+    Clouds: "A bit gloomy—layer up with a comfy hoodie or cardigan.",
+    Rain: "Wear a jacket and don’t forget your umbrella!",
+    Snow: "Bundle up with a coat, boots, and a warm hat.",
+    Haze: "Stick to light breathable layers, and maybe a face covering if needed.",
+    Mist: "It’s damp outside—throw on a light jacket or water-resistant hoodie."
+  };
+
+  const weatherMessage = data.weather ? weatherMessages[data.weather[0].main] : '';
+
 
   let formattedDate = '';
   if (data.dt && data.timezone !== undefined) {
@@ -93,8 +122,8 @@ function Weather() {
   }
 
   return(
-    <div className="container" style={{backgroundImage}}>
-      <div className="weather-app" style={{backgroundImage: backgroundImage && backgroundImage.replace ? backgroundImage.replace('to right', 'to top'): null}}>
+    <div className="container" style={{ backgroundImage: `url(${backgroundImage})`}}>
+      <div className="weather-app"  style={{background: weatherBackground && weatherBackground.replace ? weatherBackground.replace('to right', 'to top'): null}}>
 
         <div className="search">
           <div className="search-top">
@@ -115,7 +144,7 @@ function Weather() {
 
           <div className="bitmoji">
             <img src={bitmoji} alt="bitmoji" />
-            <p>Wear light clothes!</p>
+            <p>{weatherMessage}</p>
           </div>
         </div>
 

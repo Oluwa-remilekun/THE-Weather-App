@@ -5,6 +5,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .weather > img {
@@ -135,7 +138,7 @@
   top: 55%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 9rem;
+  font-size: 7rem;
   /* background: linear-gradient(to top, #f3b07c, #fcd283); */
   /* -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; */
