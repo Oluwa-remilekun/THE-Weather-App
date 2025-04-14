@@ -7,8 +7,6 @@
   align-items: center;
 }
 
-
-/* Target only the first image (weather icon) */
 .weather > img {
   margin-top: -9rem;
 }
@@ -71,6 +69,11 @@
   color: #484569;
   margin-top: 5rem;
   text-shadow: -0.3rem, 0.5rem, 1rem, rgba(0, 0, 0, 0.2);
+}
+
+.loader{
+  width: 5rem;
+  margin-top: 10rem;
 }
 
 .search-bar input::placeholder{

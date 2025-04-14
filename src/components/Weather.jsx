@@ -3,6 +3,7 @@ import sunny from "../assets/sunny.png"
 import cloudy from "../assets/cloudy.png"
 import rainy from "../assets/rainy.png"
 import snowy from "../assets/snowy.png"
+import loadingGif from "../assets/loading.gif"
 import bitmoji from "../assets/bitmoji.png"
 import { Search, Wind, MapPinIcon, Droplet} from 'lucide-react';
 import { useEffect, useState } from 'react'
@@ -11,14 +12,17 @@ import { useEffect, useState } from 'react'
 function Weather() {
   const [data, setData] = useState({})
   const [location, setLocation] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchDefaultWeather = async () => {
+      setLoading(true)
       const defaultLocation = "Nashville"
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${defaultLocation}&units=Metric&appid=${import.meta.env.VITE_APP_ID}`
       const res = await fetch(url)
       const defaultData = await res.json()
       setData(defaultData)
+      setLoading(false)
     }
 
     fetchDefaultWeather()
@@ -40,7 +44,8 @@ function Weather() {
         setData(searchData)
         setLocation('')
       }
-      console.log(searchData)
+      // console.log(searchData)
+      setLoading(false)
       
     }
     
@@ -88,8 +93,8 @@ function Weather() {
   }
 
   return(
-    <div className="container" style={{backgroundImage: backgroundImage}}>
-      <div className="weather-app">
+    <div className="container" style={{backgroundImage}}>
+      <div className="weather-app" style={{backgroundImage: backgroundImage && backgroundImage.replace ? backgroundImage.replace('to right', 'to top'): null}}>
 
         <div className="search">
           <div className="search-top">
@@ -101,7 +106,7 @@ function Weather() {
             <Search className='search-icon'onClick={search}/>
           </div>
         </div>
-        {data.notFound ? (<div className="not-found">Not Found</div>): (
+        { loading ? (<img className="loader" src={loadingGif} alt='loading'/>) : data.notFound ? (<div className="not-found">Not Found</div>): (
           <><div className="weather">
           <img src={weatherImage} alt="sunny" />
           <div className="weather-type">
