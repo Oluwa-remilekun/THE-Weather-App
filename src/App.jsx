@@ -1,16 +1,13 @@
-import Header from './components/Header';
-import './App.css';
+import React from 'react'
+import Weather from './components/Weather'
+
 
 function App() {
-  const handleSearch = (query) => {
-    console.log('Searching for:', query);
-  };
-
   return (
-    <>
-      <Header onSearch={handleSearch} />
-    </>
-  );
+    <div className='app'>
+      <Weather/>
+    </div>
+  )
 }
 
-export default App;
+export default App
